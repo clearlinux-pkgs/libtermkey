@@ -4,7 +4,7 @@
 #
 Name     : libtermkey
 Version  : 0.20
-Release  : 1
+Release  : 2
 URL      : https://github.com/neovim/libtermkey/archive/v0.20.tar.gz
 Source0  : https://github.com/neovim/libtermkey/archive/v0.20.tar.gz
 Summary  : Abstract terminal key input library
@@ -23,6 +23,7 @@ Summary: dev components for the libtermkey package.
 Group: Development
 Requires: libtermkey-lib = %{version}-%{release}
 Provides: libtermkey-devel = %{version}-%{release}
+Requires: libtermkey = %{version}-%{release}
 
 %description dev
 dev components for the libtermkey package.
@@ -55,22 +56,27 @@ man components for the libtermkey package.
 
 %prep
 %setup -q -n libtermkey-0.20
+cd %{_builddir}/libtermkey-0.20
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1554322941
-export LDFLAGS="${LDFLAGS} -fno-lto"
-make  %{?_smp_mflags} PREFIX=/usr LIBDIR=/usr/lib64
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1604359443
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
+make  %{?_smp_mflags}  PREFIX=/usr LIBDIR=/usr/lib64
 
 
 %install
-export SOURCE_DATE_EPOCH=1554322941
+export SOURCE_DATE_EPOCH=1604359443
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libtermkey
-cp LICENSE %{buildroot}/usr/share/package-licenses/libtermkey/LICENSE
+cp %{_builddir}/libtermkey-0.20/LICENSE %{buildroot}/usr/share/package-licenses/libtermkey/a002aff6411e4d72243adf719592954419a51f47
 %make_install PREFIX=/usr LIBDIR=/usr/lib64
 
 %files
@@ -78,7 +84,7 @@ cp LICENSE %{buildroot}/usr/share/package-licenses/libtermkey/LICENSE
 
 %files dev
 %defattr(-,root,root,-)
-/usr/include/*.h
+/usr/include/termkey.h
 /usr/lib64/libtermkey.so
 /usr/lib64/pkgconfig/termkey.pc
 /usr/share/man/man3/termkey_advisereadable.3.gz
@@ -113,7 +119,7 @@ cp LICENSE %{buildroot}/usr/share/package-licenses/libtermkey/LICENSE
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/libtermkey/LICENSE
+/usr/share/package-licenses/libtermkey/a002aff6411e4d72243adf719592954419a51f47
 
 %files man
 %defattr(0644,root,root,0755)
