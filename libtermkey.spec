@@ -4,7 +4,7 @@
 #
 Name     : libtermkey
 Version  : 0.20
-Release  : 2
+Release  : 3
 URL      : https://github.com/neovim/libtermkey/archive/v0.20.tar.gz
 Source0  : https://github.com/neovim/libtermkey/archive/v0.20.tar.gz
 Summary  : Abstract terminal key input library
@@ -14,6 +14,7 @@ Requires: libtermkey-lib = %{version}-%{release}
 Requires: libtermkey-license = %{version}-%{release}
 Requires: libtermkey-man = %{version}-%{release}
 BuildRequires : pkgconfig(ncurses)
+Patch1: 0001-Also-substitute-VERSION-in-pc-file.patch
 
 %description
 No detailed description available
@@ -57,13 +58,14 @@ man components for the libtermkey package.
 %prep
 %setup -q -n libtermkey-0.20
 cd %{_builddir}/libtermkey-0.20
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1604359443
+export SOURCE_DATE_EPOCH=1604361934
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$FFLAGS -fno-lto "
@@ -73,7 +75,7 @@ make  %{?_smp_mflags}  PREFIX=/usr LIBDIR=/usr/lib64
 
 
 %install
-export SOURCE_DATE_EPOCH=1604359443
+export SOURCE_DATE_EPOCH=1604361934
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libtermkey
 cp %{_builddir}/libtermkey-0.20/LICENSE %{buildroot}/usr/share/package-licenses/libtermkey/a002aff6411e4d72243adf719592954419a51f47

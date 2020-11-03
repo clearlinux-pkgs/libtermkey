@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Patrick McCarty <patrick.mccarty@intel.com>
+Date: Tue, 3 Nov 2020 00:03:34 +0000
+Subject: [PATCH] Also substitute VERSION in pc file
+
+This substitution happens in the `distdir` recipe, but not for
+`install`...
+
+Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index e5d5a63..a32695c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -110,7 +110,7 @@ install-inc: termkey.h
+ 	install -d $(DESTDIR)$(INCDIR)
+ 	install -m644 termkey.h $(DESTDIR)$(INCDIR)
+ 	install -d $(DESTDIR)$(LIBDIR)/pkgconfig
+-	sed "s,@LIBDIR@,$(LIBDIR),;s,@INCDIR@,$(INCDIR)," <termkey.pc.in >$(DESTDIR)$(LIBDIR)/pkgconfig/termkey.pc
++	sed "s,@LIBDIR@,$(LIBDIR),;s,@INCDIR@,$(INCDIR),;s,@VERSION@,$(VERSION)," <termkey.pc.in >$(DESTDIR)$(LIBDIR)/pkgconfig/termkey.pc
+ 
+ install-lib: $(LIBRARY)
+ 	install -d $(DESTDIR)$(LIBDIR)
